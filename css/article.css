@@ -1,0 +1,12 @@
+.nav-title {
+    color: #6c757d;
+    text-decoration: none;
+    font-weight: bold;
+
+}
+.nav-title:hover{
+    color:blue;
+    text-decoration: none;
+    font-weight: bold;
+
+}
