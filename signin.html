@@ -17,8 +17,8 @@
     <form class="form-signin">
       <img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
       <h1 class="h3 mb-3 font-weight-normal">我的博客</h1>
-      <label for="inputEmail" class="sr-only">账号</label>
-      <input type="text" id="inputEmail" class="form-control" placeholder="账号" required autofocus>
+      <label for="inputId" class="sr-only">账号</label>
+      <input type="text" id="inputId" class="form-control" placeholder="账号" required autofocus>
       <label for="inputPassword" class="sr-only">密码</label>
       <input type="password" id="inputPassword" class="form-control" placeholder="密码" required>
       <div class="checkbox mb-3">
@@ -26,8 +26,56 @@
           <input type="checkbox" value="remember-me"> 记住我
         </label>
       </div>
-      <button class="btn btn-lg btn-primary btn-block" type="submit">登陆</button>
+      <button class="btn btn-lg btn-primary btn-block" type="button" id="login">登陆</button>
       <p class="mt-5 mb-3 text-muted">&copy; 2019-05</p>
     </form>
   </body>
+  <script src="js/jquery.min.js" ></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script>
+    $(function () {
+      function login(){
+        let userid = $('#inputId').val();
+        let password = $('#inputPassword').val();
+        console.log(userid,password);
+
+
+        let data = {
+          "userid": userid,
+          "password":password
+        };
+        $.ajax({
+          url: "http://192.168.2.124:8080/blog/login",
+          type: "post",
+          dataType: "json",
+          data: data,
+          success: function (data) {
+            console.log(data);
+            if(data.result==0){
+              console.log(data);
+              localStorage.account_id=data.account_id;
+              localStorage.name=data.name;
+              localStorage.token = data.token;
+              window.open('blog.html','_self');
+              console.log(localStorage.account_id);
+              console.log(localStorage.name);
+              console.log(localStorage.token);
+            }else{
+              alert("登录失败");
+            }
+          },
+          error: function () {
+            alert("系统异常!");
+          }
+        });
+      }
+      $('#login').click(function () {
+        login();
+      })
+
+
+    })
+
+  </script>
+
 </html>

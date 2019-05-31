@@ -1,0 +1,11 @@
+.l-item {
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+    cursor: pointer;
+}
+.l-item:hover {
+    box-shadow: 0 .75rem 1rem rgba(0, 0, 0, .05);
+    background-color: rgba(240,240,240, .5);
+}

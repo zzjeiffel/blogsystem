@@ -11,7 +11,7 @@
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/blog.css" rel="stylesheet">
-    <link href="css/article.css" rel="stylesheet" href="">
+    <link href="css/head.css" rel="stylesheet" href="">
 </head>
 
 <body>
@@ -45,9 +45,9 @@
 
     <div class="nav-scroller py-1 mb-2">
         <nav class="nav d-flex ">
-            <a class="p-2  nav-title" href="#">日志</a>
-            <a class="p-2  nav-title" href="#">个人信息</a>
-            <a class="p-2  nav-title" href="#">新建日志</a>
+            <a class="p-2  head-title" href="blog.html">日志</a>
+            <a class="p-2  head-title" href="#">个人信息</a>
+            <a class="p-2  head-title" href="addNewLog.html">发表日志</a>
 
         </nav>
     </div>
@@ -170,6 +170,10 @@
             // html:''
         })
     })
+
+    console.log(localStorage.account_id);
+    console.log(localStorage.name);
+    console.log(localStorage.token);
 </script>
 </body>
 </html>
