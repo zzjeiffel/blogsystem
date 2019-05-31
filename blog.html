@@ -46,9 +46,7 @@
     </div>
 <!--    head内容结束-->
 
-    <div class="container">
-
-
+    <div class="container ">
       <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark" style="background-image: url('img/homepage.jpg')">
         <div class="col-md-6 px-0" id="jumpArticle">
           <h1 class="display-4 font-italic">这样的人生</h1>
@@ -60,6 +58,7 @@
         </div>
       </div>
 
+<!--      列表内容-->
       <div class="row mb-2">
         <div class="col-md-6">
           <div class="card flex-md-row mb-4 box-shadow h-md-250 l-item">
@@ -122,38 +121,9 @@
       </div>
 
 <!--      test-->
-      <div class="row mb-2">
-        <div class="col-md-6">
-<!--          点击这个div跳转-->
-          <div class="card flex-md-row mb-4 box-shadow h-md-250 l-item">
-            <div class="card-body d-flex flex-column align-items-start">
-              <!--<strong class="d-inline-block mb-2 text-primary">World</strong>-->
-              <h3 class="mb-0">
-                麦琪的礼物
-              </h3>
-              <div class="mb-1 text-muted">欧·亨利</div>
-              <p class="card-text mb-auto">1块8毛7，就这么些钱，其中六毛是一分一分的铜板，一个子儿一个子儿在杂货店老板、菜贩子和肉店老板...</p>
-<!--              <button onclick="window.open('article3.html')">继续阅读...</button>-->
-            </div>
-            <img class="card-img-right flex-auto d-none d-md-block" src="img/magi.jpg" alt="Card image cap">
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="card flex-md-row mb-4 box-shadow h-md-250 l-item">
-            <div class="card-body d-flex flex-column align-items-start">
-              <!--<strong class="d-inline-block mb-2 text-success">Design</strong>-->
-              <h3 class="mb-0">
-                流浪地球
-              </h3>
-              <div class="mb-1 text-muted">刘慈欣</div>
-              <p class="card-text mb-auto">我没见过黑夜，我没见过星星，我没见过春天、秋天和冬天。我出生在刹车时代结束的时候，那时地球刚刚停止转动...</p>
-<!--              <button onclick="window.open('article2.html')">继续阅读...</button>-->
-            </div>
-            <img class="card-img-right flex-auto d-none d-md-block" src="img/earch.jpg" alt="Card image cap">
-          </div>
-        </div>
+      <div class="row mb-2"  id="item-list">
+
       </div>
-      <div class="test-card"></div>
 
     </div>
 
@@ -179,9 +149,7 @@
         text: 'Thumbnail'
       });
 
-      console.log(localStorage.account_id);
-      console.log(localStorage.name);
-      console.log(localStorage.token);
+
 
       let title = 'test';
       let textContent = 'content';
@@ -202,34 +170,40 @@
 
 
 
-      $('.test-card').html(addItem(title,textContent,author));
 
-      // $(function () {
-      //   $.ajax({
-      //     url: "http://192.168.2.124:8080//blog/articlelistview",
-      //     type: "post",
-      //     dataType: "json",
-      //     data: data,
-      //     success: function (data) {
-      //       console.log(data);
-      //       if(data.result==0){
-      //         console.log(data);
-      //         localStorage.account_id=data.account_id;
-      //         localStorage.name=data.name;
-      //         localStorage.token = data.token;
-      //         window.open('blog.html','_self');
-      //         console.log(localStorage.account_id);
-      //         console.log(localStorage.name);
-      //         console.log(localStorage.token);
-      //       }else{
-      //         alert("登录失败");
-      //       }
-      //     },
-      //     error: function () {
-      //       alert("系统异常!");
-      //     }
-      //   });
-      // })
+      // $('.test-card').html(addItem(title,textContent,author));
+
+      console.log(localStorage.account_id);
+      console.log(localStorage.name);
+      console.log(localStorage.token);
+      localStorage.account_id='1';
+      localStorage.name='管理员';
+      localStorage.token='';
+
+
+      let data = {
+        "account_id": localStorage.account_id
+      };
+
+
+      $(function () {
+        $.ajax({
+          url: "http://192.168.2.118:8080/blog/articlesmylist",
+          type: "post",
+          dataType: "json",
+          data: data,
+          success: function (data) {
+            let html='';
+            for (let i=0;i<data.infos.length;i++) {
+              html += addItem(data.infos[i].title,data.infos[i].description,localStorage.name)
+            }
+            $('#item-list').html(html);
+          },
+          error: function () {
+            alert("获取列表失败!");
+          }
+        });
+      })
     </script>
   </body>
 </html>
