@@ -32,8 +32,13 @@
   </body>
   <script src="js/jquery.min.js" ></script>
   <script src="js/bootstrap.min.js"></script>
+  <script src="js/function.js"></script>
+
   <script>
     $(function () {
+      localStorage.removeItem('account_id');
+      localStorage.removeItem('name');
+      localStorage.removeItem('token');
       function login(){
         let userid = $('#inputId').val();
         let password = $('#inputPassword').val();
@@ -45,23 +50,21 @@
           "password":password
         };
         $.ajax({
-          url: "http://192.168.2.118:8080/blog/login",
+          url: url+"/blog/login",
+          // url: 'http://192.168.2.224:8080/blog/denglu',
           type: "post",
           dataType: "json",
           data: data,
           success: function (data) {
-            console.log(data);
             if(data.result==0){
-              console.log(data);
               localStorage.account_id=data.account_id;
               localStorage.name=data.name;
               localStorage.token = data.token;
               window.open('blog.html','_self');
-              console.log(localStorage.account_id);
-              console.log(localStorage.name);
-              console.log(localStorage.token);
+
             }else{
               alert("登录失败");
+
             }
           },
           error: function () {
@@ -74,8 +77,8 @@
       })
 
 
-    })
-
+    });
+    console.log(localStorage.account_id);
   </script>
 
 </html>

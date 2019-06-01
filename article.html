@@ -20,7 +20,7 @@
     <header class="blog-header py-3">
         <div class="row flex-nowrap justify-content-between align-items-center">
             <div class="col-8 pt-1">
-                <a class="blog-header-logo text-dark" href="#">LOGO后端</a>
+                <a class="blog-header-logo text-dark name" >LOGO后端</a>
             </div>
 <!--            <div class="col-4 text-center">-->
 <!--            </div>-->
@@ -56,8 +56,8 @@
 <main role="main" class="container mt-4">
     <div class="row">
         <div class="col-md-8 blog-main">
-            <h3 class="pb-3 mb-4 font-italic border-bottom">
-                “账号名称”的个人主页
+            <h3 class="pb-3 mb-4  border-bottom ">
+
             </h3>
 
             <div class="blog-post">
@@ -67,9 +67,12 @@
             </div><!-- /.blog-post -->
             <div class="nav-scroller py-1 px-4 mb-2">
                 <nav class="nav d-flex justify-content-between blog-pagination">
-                    <a class="btn btn-outline-primary" href="#">上一篇</a>
-                    <a class="btn btn-outline-secondary" href="#">下一篇</a>
+
+                    <a class="btn btn-outline-primary pre"  href="javascript:void(0);">上一篇</a>
+                    <a class="btn btn-outline-primary next ml-auto" href="javascript:void(0);" >下一篇</a>
+
                 </nav>
+
             </div>
 
         </div><!-- /.blog-main -->
@@ -83,20 +86,20 @@
             </div>
 
             <div class="p-3">
-                <h4 class="font-italic">最近十篇文章日期链接</h4>
-                <ol class="list-unstyled mb-0">
-                    <li><a href="#">March 2014</a></li>
-                    <li><a href="#">February 2014</a></li>
-                    <li><a href="#">January 2014</a></li>
-                    <li><a href="#">December 2013</a></li>
-                    <li><a href="#">November 2013</a></li>
-                    <li><a href="#">October 2013</a></li>
-                    <li><a href="#">September 2013</a></li>
-                    <li><a href="#">August 2013</a></li>
-                    <li><a href="#">July 2013</a></li>
-                    <li><a href="#">June 2013</a></li>
-                    <li><a href="#">May 2013</a></li>
-                    <li><a href="#">April 2013</a></li>
+                <h4 class="font-italic">统计</h4>
+                <ol class="list-time list-unstyled mb-0">
+<!--                    <li><a href="#">March 2014</a></li>-->
+<!--                    <li><a href="#">February 2014</a></li>-->
+<!--                    <li><a href="#">January 2014</a></li>-->
+<!--                    <li><a href="#">December 2013</a></li>-->
+<!--                    <li><a href="#">November 2013</a></li>-->
+<!--                    <li><a href="#">October 2013</a></li>-->
+<!--                    <li><a href="#">September 2013</a></li>-->
+<!--                    <li><a href="#">August 2013</a></li>-->
+<!--                    <li><a href="#">July 2013</a></li>-->
+<!--                    <li><a href="#">June 2013</a></li>-->
+<!--                    <li><a href="#">May 2013</a></li>-->
+<!--                    <li><a href="#">April 2013</a></li>-->
                 </ol>
             </div>
 
@@ -127,48 +130,88 @@
 <script src="js/popper.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/holder.min.js"></script>
+<script src="js/function.js"></script>
 <script>
     console.log(localStorage.account_id);
     console.log(localStorage.name);
     console.log(localStorage.token);
-    console.log(localStorage.article_id);
-    // localStorage.account_id='1';
-    // localStorage.name='管理员';
-    // localStorage.token='';
-    // localStorage.id='3';
+    let articleid = GetQueryString('articleid');
+
 
     $(function () {
-
-        let articleid = window.location.href.split("?id=")[1];
+        let pre;
+        let next;
+        let preId=0;
+        let nextId=0;
         let data = {
             // "account_id": localStorage.account_id,
-            "id":articleid
-
+            "id":articleid,
+            "action":""
         };
-        Holder.addTheme('thumb', {
-            bg: '#55595c',
-            fg: '#eceeef',
-            text: 'Thumbnail'
-        });
 
-        $('.example-popover').popover({
-            container: 'body',
-            trigger: 'focus'
-            // html:''
-        });
+
 
 
         $.ajax({
-            url: "http://192.168.2.118:8080/blog/showonearticle",
+            url: url+"/blog/showonearticle",
             type: "post",
             dataType: "json",
             data: data,
             success: function (data) {
                 console.log(data);
-                // console.log(data.infos[0].title);
+                articleid=data.infos[0].id;
+                $('.name').html(data.infos[0].name+'的BLOG');
                 $('.blog-post-title').html(data.infos[0].title);
                 $('.blog-post-meta').html(data.infos[0].create_time+'&nbsp&nbsp&nbsp<a style="color:dodgerblue">'+data.infos[0].title+'</a>')
-                $('.blog-post-content').html(data.infos[0].context);
+                $('.blog-post-content').html(format(unescape(data.infos[0].context)));
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(XMLHttpRequest);
+                console.log(textStatus);
+                console.log(errorThrown);
+                alert("获取列表失败!");
+            }
+        });
+
+        // 获取上下页文章信息 翻页
+        pre= getDetail(data,'pre');
+        next = getDetail(data,'next');
+
+        if(pre.infos.length==1){
+            preId = pre.infos[0].id;
+            console.log(preId);
+        }else{
+            $('.pre').hide();
+        }
+        if(next.infos.length==1){
+            nextId = next.infos[0].id;
+        }
+        else{
+            $('.next').hide();
+        }
+        console.log(nextId);
+
+        $('.pre').click(function () {
+            window.open('article.html?articleid=' + preId,'_self');
+        });
+        $('.next').click(function () {
+            window.open('article.html?articleid=' + nextId,'_self');
+        });
+
+        let time='';
+        //右侧文章链接
+        $.ajax({
+            url: url+"/blog/dayarticlelist",
+            type: "post",
+            dataType: "json",
+            data: time,
+            success: function (data) {
+                let html='';
+                for(let i = 0;i<data.infos.length;i++){
+                    html+='<li><a>'+data.infos[i].day+'-----'+data.infos[i].counts+'篇</a></li>';
+                }
+                $('.list-time').html(html);
+
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 console.log(XMLHttpRequest);
