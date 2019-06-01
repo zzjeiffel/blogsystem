@@ -61,39 +61,10 @@
             </h3>
 
             <div class="blog-post">
-                <h2 class="blog-post-title">写给那个茶水妹的《乘风破浪》诞生记</h2>
-                <p class="blog-post-meta">2017-01-26 by <a href="#">韩寒</a></p>
-
-                <p>2016年，上海，初秋，穿过城市的风带着南方特有的湿气。藏在每天涌入这座巨型城市的喧闹人潮当中，《乘风破浪》悄无声息地开拍了。没有开机仪式，连最为传统的两个基础步骤——烧香，以及揭开事先盖在摄影机上的红布——也被省略了。你甚至无法在现场的三百多张工作证上找到这部电影的名字，取而代之的是不用说也知道出自谁手的七个金色大字，“金秋十月农忙欢”。
-                </p>
-                <p>开机当天凌晨4点，制片主任徐征带着全体主创去寺庙做了一场早课。果然，导演韩寒再次错过了这场以“求个平安”为目的的祈福——他最重要的第二项人生追求是“可以自由决定睡眠时间”。通常情况下，这会由对醒来之后所要做的事情的热爱程度来决定，比如拍摄正式开始没几天，他一下子就变成了全组睡得最晚、起得最早的人。
-                </p>
-                <p>而第一项人生追求“不主动社交”则被他贯彻得更加彻底——开机仪式就被他视为不必要的社交活动之一。不过，如果有人据此推断导演是个难以相处的人，那么用不了多久，他就会发现自己完全搞错了。
-                </p>
-                <p>  导演不是没有听过诸多电影前辈关于“刚开始拍一定要用高压政策把所有人震住”的劝诫，但显然从来没打算这么做。他看起来总是很轻松，“特别爱玩”，“特别能跑”。
-                </p>
-                <p>  最开始，很多身经百战的剧组人像看西洋镜一样看着这个从不发火的导演，“从来没见过”，他们说，有人甚至试图用地域来解释这个问题，“是不是因为他是上海人啊？”又过了一段时间，他们惊讶地发现几个制片人说话的口气和神态都开始跟导演越来越像了。
-                </p>
-                <p>  “所以这个制作团队，”他的好朋友、这部电影的录音指导郭明在很久之后总结道，“看上去韩寒是一个名字，但实际上韩寒代表所有人。”</p>
+                <h2 class="blog-post-title"></h2>
+                <p class="blog-post-meta"></p>
+                <div class="blog-post-content"></div>
             </div><!-- /.blog-post -->
-
-<!--            <div class="blog-post">-->
-<!--                <h2 class="blog-post-title">Another blog post</h2>-->
-<!--                <p class="blog-post-meta">December 23, 2013 by <a href="#">Jacob</a></p>-->
-
-<!--                <p>Cum sociis natoque penatibus et magnis <a href="#">dis parturient montes</a>, nascetur ridiculus mus. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Sed posuere consectetur est at lobortis. Cras mattis consectetur purus sit amet fermentum.</p>-->
-<!--                <blockquote>-->
-<!--                    <p>Curabitur blandit tempus porttitor. <strong>Nullam quis risus eget urna mollis</strong> ornare vel eu leo. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>-->
-<!--                </blockquote>-->
-<!--                <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>-->
-<!--                <p>Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>-->
-<!--            </div>&lt;!&ndash; /.blog-post &ndash;&gt;-->
-
-
-<!--            <nav class="blog-pagination ">-->
-<!--                <a class="btn btn-outline-primary" href="#">上一篇</a>-->
-<!--                <a class="btn btn-outline-secondary disabled" href="#">下一篇</a>-->
-<!--            </nav>-->
             <div class="nav-scroller py-1 px-4 mb-2">
                 <nav class="nav d-flex justify-content-between blog-pagination">
                     <a class="btn btn-outline-primary" href="#">上一篇</a>
@@ -157,23 +128,59 @@
 <script src="js/bootstrap.min.js"></script>
 <script src="js/holder.min.js"></script>
 <script>
-    Holder.addTheme('thumb', {
-        bg: '#55595c',
-        fg: '#eceeef',
-        text: 'Thumbnail'
-    });
+    console.log(localStorage.account_id);
+    console.log(localStorage.name);
+    console.log(localStorage.token);
+    console.log(localStorage.article_id);
+    // localStorage.account_id='1';
+    // localStorage.name='管理员';
+    // localStorage.token='';
+    // localStorage.id='3';
 
     $(function () {
+
+        let articleid = window.location.href.split("?id=")[1];
+        let data = {
+            // "account_id": localStorage.account_id,
+            "id":articleid
+
+        };
+        Holder.addTheme('thumb', {
+            bg: '#55595c',
+            fg: '#eceeef',
+            text: 'Thumbnail'
+        });
+
         $('.example-popover').popover({
             container: 'body',
             trigger: 'focus'
             // html:''
-        })
-    })
+        });
 
-    console.log(localStorage.account_id);
-    console.log(localStorage.name);
-    console.log(localStorage.token);
+
+        $.ajax({
+            url: "http://192.168.2.118:8080/blog/showonearticle",
+            type: "post",
+            dataType: "json",
+            data: data,
+            success: function (data) {
+                console.log(data);
+                // console.log(data.infos[0].title);
+                $('.blog-post-title').html(data.infos[0].title);
+                $('.blog-post-meta').html(data.infos[0].create_time+'&nbsp&nbsp&nbsp<a style="color:dodgerblue">'+data.infos[0].title+'</a>')
+                $('.blog-post-content').html(data.infos[0].context);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(XMLHttpRequest);
+                console.log(textStatus);
+                console.log(errorThrown);
+                alert("获取列表失败!");
+            }
+        });
+
+    });
+
+
 </script>
 </body>
 </html>
