@@ -1,0 +1,11 @@
+.personalPic{
+    background-image:url('../img/xingkong.jpg') ;
+    background-size:cover;
+}
+.formStyle{
+    width: 70%;
+    margin: 0 auto;
+}
+.changebutton{
+    margin-right: 170px;
+}
