@@ -12,7 +12,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/blog.css" rel="stylesheet">
     <link href="css/head.css" rel="stylesheet">
-    <link href="css/addNewLog.css" rel="stylesheet" href="">
+    <link href="css/personalPage.css" rel="stylesheet" href="">
 </head>
 <body>
 <!--    head内容开始-->
@@ -35,59 +35,59 @@
     <div class="nav-scroller py-1 mb-2">
         <nav class="nav d-flex ">
             <a class="p-2  head-title" href="blog.html">日志</a>
-            <a class="p-2  head-title" href="personalPage.html">个人信息</a>
-            <a class="p-2  head-title acitve" >发表日志</a>
+            <a class="p-2  head-title">个人信息</a>
+            <a class="p-2  head-title acitve" href="addNewLog.html">发表日志</a>
 
         </nav>
     </div>
 </div>
 <!--    head内容结束-->
 <div class="container">
-    <div class="addNew jumbotron p-3 p-md-5 text-white rounded " >
+    <div class="personalPic jumbotron p-3 p-md-5 text-white rounded " >
         <div class="col-md-6 px-0" id="jumpArticle" >
-            <h1 class="display-4 lead">发表日志</h1>
-            <p class="lead my-3"> 我的日志</p>
+            <h1 class="display-4 lead">个人信息</h1>
+            <p class="lead my-3"> 我的资料</p>
         </div>
     </div>
     <div>
-        <form >
-            <div class="form-group">
-                <label for="title">标题</label>
-                <input type="text" class="form-control" id="title" style="" placeholder="请输入标题">
+        <fieldset disabled="disabled">
+        <form class="formStyle">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">昵称</span>
+                </div>
+                <input type="text" class="form-control" id="name" placeholder="请输入昵称" aria-label="Username" aria-describedby="basic-addon1">
             </div>
-            <textarea class="form-control" rows="10" name="mytextarea" placeholder="我的日志" id="textContent"></textarea>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon2">签名</span>
+                </div>
+                <input type="text" class="form-control" id="motto" value="" placeholder="请输入签名" aria-label="Username" aria-describedby="basic-addon1">
+            </div>
+            <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon3">手机</span>
+            </div>
+            <input type="text" class="form-control" id="phone" placeholder="请输入手机号" aria-label="Username" aria-describedby="basic-addon1">
+        </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon4">邮箱</span>
+                </div>
+                <input type="text" class="form-control" id="email" placeholder="请输入邮箱地址" aria-label="Username" aria-describedby="basic-addon1">
+            </div>
         </form>
-        <div class="d-flex justify-content-end mt-2 mb-4">
+        </fieldset>
+        <div class="changebutton d-flex justify-content-end mt-2 mb-4">
             <div class="mr-2">
-                <button type="button" class="btn btn-primary" id="send">提交</button>
+                <button type="button" class="btn btn-primary" id="modification" onclick="window.location.replace('personalModifi.html')">修改个人信息</button>
             </div>
             <div>
                 <button type="button" class="btn btn-secondary" onclick="window.location.replace('blog.html')">返回</button>
             </div>
-
         </div>
     </div>
 
-</div>
-
-<div class="modal" tabindex="-1" role="dialog" id="test">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">恭喜</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>日志提交成功！</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="window.location.replace('blog.html')">返回首页</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
-            </div>
-        </div>
-    </div>
 </div>
 
 <footer class="blog-footer">
@@ -103,43 +103,36 @@
 <script src="js/bootstrap.min.js"></script>
 
 <script>
+
     $(function () {
         $('.example-popover').popover({
             container: 'body',
             trigger: 'focus'
             // html:''
         });
-
-        function send(){
-            let title = $('#title').val();
-            let textContent = $('#textContent').val();
-            let description = $('#textContent').val().slice(0,50);
-            // console.log(title,textContent,description);
-            let data = {
-                "title": title,
-                "textContent":textContent,
-                "account_id":localStorage.account_id,
-                "description":description,
-            };
-            $.ajax({
-                url: "http://192.168.2.118:8080/blog/articleadd",
-                type: "post",
-                dataType: "json",
-                data: data,
-                success: function (data) {
-                    if(data.result==0){
-                        $('.modal').modal('show');
-                    }else{
-                        alert("上传失败");
-                    }
-                },
-                error: function () {
-                    alert("系统异常!");
-                }
-            });
-        }
-        $('#send').click(function () {
-            send();
+        // let text=$("#name").attr("value",data.infos.name);
+        // console.log(text);
+        let param = {
+            "id": "1"
+        };
+        $.ajax({
+            url : "http://192.168.2.224:8080/blog/showuserinfo",
+            dataType : "json",
+            type : "get",
+            data: param,
+            success : function(data) {
+                var name = data.infos.name;
+                var motto = data.infos.motto;
+                var phone = data.infos.phone;
+                var email = data.infos.email;
+                $("#name").val(name); //动态给页面input赋值
+                $("#motto").val(motto);
+                $("#phone").val(phone);
+                $("#email").val(email);
+            },
+            error: function () {
+                alert("获取失败");
+            }
         })
     })
 </script>
